@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Loan Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .calculator {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 800px;
+        }
+        .calculator h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #444;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .form-group button {
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .form-group button:hover {
+            background-color: #218838;
+        }
+        .result {
+            margin-top: 20px;
+        }
+        .summary {
+            margin-top: 20px;
+            background-color: #dff0d8;
+            padding: 15px;
+            border-radius: 8px;
+            color: #3c763d;
+        }
+        .summary table {
+            width: 100%;
+        }
+        .summary th, .summary td {
+            text-align: left;
+            padding: 8px;
+        }
+        .summary th {
+            font-weight: bold;
+        }
+        .result table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .result th, .result td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        .result th {
+            background-color: #f4f4f9;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="calculator">
+    <h1>Home Loan Calculator</h1>
+    <div class="form-group">
+        <label for="loanAmount">Loan Amount ($):</label>
+        <input type="number" id="loanAmount" placeholder="Enter loan amount">
+    </div>
+    <div class="form-group">
+        <label for="interestRate">Annual Interest Rate (%):</label>
+        <input type="number" id="interestRate" placeholder="Enter annual interest rate">
+    </div>
+    <div class="form-group">
+        <label for="loanTerm">Loan Term (Years):</label>
+        <input type="number" id="loanTerm" placeholder="Enter loan term in years">
+    </div>
+    <div class="form-group">
+        <button onclick="calculateLoan()">Calculate</button>
+    </div>
+    <div class="summary" id="summary" style="display: none;"></div>
+    <div class="result" id="result"></div>
+</div>
+
+<script>
+    function calculateLoan() {
+        const loanAmount = parseFloat(document.getElementById('loanAmount').value);
+        const interestRate = parseFloat(document.getElementById('interestRate').value) / 100 / 12;
+        const loanTerm = parseInt(document.getElementById('loanTerm').value) * 12;
+
+        if (isNaN(loanAmount) || isNaN(interestRate) || isNaN(loanTerm) || loanAmount <= 0 || interestRate <= 0 || loanTerm <= 0) {
+            document.getElementById('result').innerHTML = "<p>Please enter valid values for all fields.</p>";
+            document.getElementById('summary').style.display = 'none';
+            return;
+        }
+
+        const monthlyPayment = (loanAmount * interestRate * Math.pow(1 + interestRate, loanTerm)) / (Math.pow(1 + interestRate, loanTerm) - 1);
+        const totalPayment = monthlyPayment * loanTerm;
+        const totalInterest = totalPayment - loanAmount;
+
+        // Display summary
+        const summaryHTML = `
+            <table>
+                <tr>
+                    <th>Your Loan Payment</th>
+                    <td>${monthlyPayment.toFixed(2)}</td>
+                </tr>
+                <tr>
+                    <th>Total Interest Paid</th>
+                    <td>${totalInterest.toFixed(2)}</td>
+                </tr>
+                <tr>
+                    <th>Loan Amount</th>
+                    <td>${loanAmount.toFixed(2)}</td>
+                </tr>
+                <tr>
+                    <th>Annual Interest Rate</th>
+                    <td>${(interestRate * 12 * 100).toFixed(2)}%</td>
+                </tr>
+                <tr>
+                    <th>Loan Term</th>
+                    <td>${(loanTerm / 12)} years</td>
+                </tr>
+            </table>
+        `;
+        document.getElementById('summary').innerHTML = summaryHTML;
+        document.getElementById('summary').style.display = 'block';
+
+        // Generate amortization table
+        let balance = loanAmount;
+        let resultHTML = `
+            <h3>Amortization Schedule</h3>
+            <table>
+                <tr>
+                    <th>Month No.</th>
+                    <th>Principal</th>
+                    <th>Interest</th>
+                    <th>Payment</th>
+                </tr>
+        `;
+
+        for (let month = 1; month <= loanTerm; month++) {
+            const interest = balance * interestRate;
+            const principal = monthlyPayment - interest;
+            balance -= principal;
+
+            resultHTML += `
+                <tr>
+                    <td>${month}</td>
+                    <td>${principal.toFixed(2)}</td>
+                    <td>${interest.toFixed(2)}</td>
+                    <td>${monthlyPayment.toFixed(2)}</td>
+                </tr>
+            `;
+        }
+
+        resultHTML += `</table>`;
+        document.getElementById('result').innerHTML = resultHTML;
+    }
+</script>
+
+</body>
+</html>

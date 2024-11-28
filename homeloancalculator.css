@@ -1,0 +1,93 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #fb9494;
+    color: #000;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+.calculator {
+    background: #efa4a4;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    border: 3.5px solid #d03c3c;
+    width: 100%;
+    max-width: 800px;
+}
+.calculator h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #000;
+}
+.form-group {
+    margin-bottom: 15px;
+}
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+.form-group input {
+    width: 70%;
+    padding: 8px;
+    border: 2px solid #d03c3c;
+    border-radius: 8px;
+}
+.form-group button {
+    width: 40%;
+    float: right;
+    display: block;
+    margin-bottom: 20px;
+    padding : 10px;
+    background-color: #8e3434;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+}
+.form-group button:hover {
+    background-color: #c84848;
+}
+.result {
+    margin-top: 20px;
+}
+.summary {
+    margin-top: 30px;
+    padding: 15px;
+    border-radius: 8px;
+    color: #000;
+}
+.summary table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.summary th, .summary td {
+    text-align: left;
+    padding: 8px;
+    border: 2.5px solid #8e3434;
+    background-color: #ddd;
+}
+.summary th {
+    font-weight: bold;
+}
+.result table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+.result th, .result td {
+    border: 1.5px solid #8e3434;
+    background-color: #f6d5d5;
+    padding: 8px;
+    text-align: center;
+}
+.result th {
+    background-color: #fff;
+    font-weight: bold;
+}
